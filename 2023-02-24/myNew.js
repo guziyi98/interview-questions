@@ -19,5 +19,5 @@ function myNew(ctx) {
 
 const s = new String('1')
 console.log(s)
-// const s2 = myNew('2')
-// console.log(s2)
+const s2 = myNew('2')
+console.log(s2)

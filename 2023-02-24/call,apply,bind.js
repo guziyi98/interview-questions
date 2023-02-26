@@ -1,3 +1,6 @@
+// 通过原型链得到调用call的一定是函数
+// 执行当前的函数
+// 改变this指向
 const obj = {
   name: 'gzy',
   say(prefix, age) {
@@ -14,13 +17,13 @@ const a = {
 Function.prototype.myCall = function (target, ...args) {
   target = target || window
   const symbolKey = Symbol()
-  target[symbolKey] = this
+  target[symbolKey] = this // this就是执行的函数 say
   const res = target[symbolKey](...args)
-  delete target[symbolKey]
+  delete target[symbolKey] // 调用完删除拓展属性
   return res
 }
 // obj.say('hello', 35)
-// obj.say.myCall(a, 'hello2', 45)
+obj.say.myCall(a, 'hello2', 45)
 
 //手撕apply
 Function.prototype.myApply = function (target, arr) { // 和call的区别是这里是个数组
@@ -57,8 +60,7 @@ Function.prototype.myBind = function (target, ...args) {
   const symbolKey = Symbol()
   target[symbolKey] = this
   return function (...params) {
-    const res = target[symbolKey](...args, ...params)
-    return res
+    return res = target[symbolKey](...args, ...params)
   }
 }
 const myBind = mbs.say.myBind(B, 'hello', 33)

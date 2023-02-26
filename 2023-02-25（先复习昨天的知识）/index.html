@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大文件上传</title>
+  </head>
+  <body>
+    <input class="input" type="file" />
+    <script src="./spark-md5.min.js"></script>
+    <script>
+      const inp = document.querySelector('input')
+      inp.onchange = async (e) => {
+        const file = inp.files[0]
+        if (!file) {
+          return
+        }
+        const piece = file.slice(0, 100)
+        const chunks = createChunks(file, 10 * 1024 * 1024) // 单位是B
+        console.log(chunks)
+        const res = await hash(chunks)
+        console.log(res)
+      }
+      function createChunks(file, chunkSize) {
+        const result = []
+        for (let i = 0; i < file.size; i += chunkSize) {
+          result.push(file.slice(i, i + chunkSize))
+        }
+        return result
+      }
+      // 文件秒传： 比如当前上传的时候断网了，下次重新上传的时候需要上传剩下的部分
+      // 计算数据的hash值，数据太大的情况下，不能一次计算出来，需要用到增量算法：我先计算一块数据的hash，然后这块数据就不要了，下一个数据来了，再跟之前的hash一起计算
+      function hash(chunks) {
+        return new Promise((resolve) => {
+          const spark = new SparkMD5()
+          function _read(i) {
+            if (i >= chunks.length) {
+              const end = spark.end()
+              // console.log(end)
+              resolve(end)
+              return
+            }
+            const blob = chunks[i]
+            const reader = new FileReader()
+            reader.onload = (e) => {
+              const bytes = e.target.result // 读取到的字节数组
+              spark.append(bytes)
+              _read(i + 1)
+            }
+            reader.readAsArrayBuffer(blob)
+          }
+          _read(0)
+        })
+      }
+    </script>
+  </body>
+</html>
