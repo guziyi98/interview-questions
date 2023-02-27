@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #app {
+        padding: 10px;
+        background-color: rgb(220, 220, 220);
+      }
+      .light {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        transition: all 0.4s ease-in-out;
+      }
+      .green {
+        background-color: green;
+      }
+      .yellow {
+        background-color: yellow;
+      }
+      .red {
+        background-color: red;
+      }
+      .off {
+        opacity: 0.3;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="light green"></div>
+      <div class="light yellow off"></div>
+      <div class="light red off"></div>
+    </div>
+  </body>
+  <script src="./红绿灯.js"></script>
+</html>

@@ -4,17 +4,25 @@
 // 3. 调用构造函数
 // 4. 返回新对象的地址，保存到=左边的变量里
 
-function myNew(ctx) {
+function myNew(ctx, ...args) {
   if (typeof ctx !== 'function') {
     throw new TypeError('the first parameter of newObj must be function')
   }
   // 1.创建一个新对象 2.让子对象继承构造函数的原型对象
-  const o = Object.create(ctx.prototype)
-  const args = [].slice.call(arguments, 1) // 将arguments转为arr并去除第一个元素
-  const objRes = ctx.call(o, ...args) // 3. 改变this指向 将构造函数中的this => new 创建的新对象
-  const isObj = typeof objRes === 'object' && objRes !== null
-  const isFun = typeof objRes === 'function'
-  return (isObj || isFun) ? objRes : o
+  // const o = Object.create(ctx.prototype)
+  // const args = [].slice.call(arguments, 1) // 将arguments转为arr并去除第一个元素
+  // const objRes = ctx.call(o, ...args) // 3. 改变this指向 将构造函数中的this => new 创建的新对象
+  // const isObj = typeof objRes === 'object' && objRes !== null
+  // const isFun = typeof objRes === 'function'
+  // return (isObj || isFun) ? objRes : o
+  // 1.创建一个新的对象
+  // 2. 让传进来的函数指向这个对象
+  // 3. 赋值给obj
+  // 4. 调用构造函数
+  const obj = Object.create(ctx.prototype)
+  const res = ctx.call(obj, ...args)
+  return res instanceof Object ? res : obj
+
 }
 
 const s = new String('1')
