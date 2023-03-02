@@ -178,6 +178,10 @@ class myPromise {
       }
     })
   }
+
+  race() {
+
+  }
 }
 // 实现resolve和reject
 

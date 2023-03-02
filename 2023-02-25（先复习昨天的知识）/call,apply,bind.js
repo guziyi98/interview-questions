@@ -33,3 +33,12 @@ const myBind = (target, ...args) => { // 返回的是一个函数
     return res
   }
 }
+
+const myCall2 = function (target, args) {
+  target = target || window
+  const symbolKey = Symbol()
+  target[symbolKey] = this
+  const res = target[symbolKey](...args)
+  delete target[symbolKey]
+  return res
+}

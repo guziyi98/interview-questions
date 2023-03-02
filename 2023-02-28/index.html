@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    h3 {
+      height: 400px;
+    }
+  </style>
+  <body>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+    <h3>哈哈哈</h3>
+  </body>
+  <script>
+    function debounce(fn, wait) {
+      let timer = null
+      return function () {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn.apply(this, arguments)
+        }, wait)
+      }
+    }
+    function throttle(fn, wait) {
+      let timer = null
+      let flag = true
+      return function () {
+        if (flag) {
+          flag = false
+          timer = setTimeout(() => {
+            fn.apply(this, arguments)
+            flag = true
+          }, wait)
+        }
+      }
+    }
+    function onScroll() {
+      const scroll =
+        document.documentElement.scrollTop || document.body.scrollTop
+      console.log(scroll)
+    }
+    // window.onscroll = debounce(onScroll, 1000)
+    window.onscroll = throttle(onScroll, 2000)
+  </script>
+  <script>
+    // https://leetcode.cn/problems/find-the-difference/
+
+    var findTheDifference = function (s, t) {
+      let tlen = t.length
+      let res = ''
+      let obj = {}
+      // 还得判断重复的情况 "a" => "aa" "bbbb" => "bbbbb"
+
+      for (let i = 0; i < tlen; i++) {
+        // debugger
+        if (s.includes(t[i])) {
+          if (obj[t[i]]) {
+            obj[t[i]]++
+            if (obj[t[i]] > 1) {
+              res = t[i]
+            }
+            continue
+          }
+          obj[t[i]] = 1
+        } else {
+          res = t[i]
+        }
+      }
+      return res
+    }
+    const s = 'aaaa'
+    const t = 'aaaaa'
+    console.log(findTheDifference(s, t))
+  </script>
+</html>
